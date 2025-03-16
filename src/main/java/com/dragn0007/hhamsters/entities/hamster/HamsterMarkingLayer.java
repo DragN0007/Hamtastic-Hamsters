@@ -1,6 +1,6 @@
 package com.dragn0007.hhamsters.entities.hamster;
 
-import com.dragn0007.dragnlivestock.LivestockOverhaul;
+import com.dragn0007.hhamsters.HamtasticHamsters;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,17 +33,17 @@ public class HamsterMarkingLayer extends GeoRenderLayer<Hamster> {
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/none.png")),
-        BACKSPLASH(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_backsplash_overlay.png")),
-        BANDED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_banded_overlay.png")),
-        DAPPLE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_dapple_overlay.png")),
-        DOMINANT_POLYWHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_dominant_polywhite_overlay.png")),
-        DOMINANT_SPOT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_dominant_spot_overlay.png")),
-        POLYWHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_polywhite_overlay.png")),
-        SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_socks_overlay.png")),
-        SPLASH(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_splash_overlay.png")),
-        SPOT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_spot_overlay.png")),
-        WHITEBELLY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/hamster/pattern/hamster_whitebelly_overlay.png"));
+        NONE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/none.png")),
+        BACKSPLASH(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_backsplash_overlay.png")),
+        BANDED(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_banded_overlay.png")),
+        DAPPLE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_dapple_overlay.png")),
+        DOMINANT_POLYWHITE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_dominant_polywhite_overlay.png")),
+        DOMINANT_SPOT(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_dominant_spot_overlay.png")),
+        POLYWHITE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_polywhite_overlay.png")),
+        SOCKS(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_socks_overlay.png")),
+        SPLASH(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_splash_overlay.png")),
+        SPOT(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_spot_overlay.png")),
+        WHITEBELLY(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/pattern/hamster_whitebelly_overlay.png"));
 
         public final ResourceLocation resourceLocation;
         Overlay(ResourceLocation resourceLocation) {
