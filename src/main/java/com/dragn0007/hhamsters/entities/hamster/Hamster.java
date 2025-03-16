@@ -7,6 +7,7 @@ import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.dragn0007.hhamsters.HamtasticHamsters;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
+import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,11 +16,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,6 +28,8 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -44,6 +46,9 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -55,12 +60,18 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
-public class Hamster extends TamableAnimal implements GeoEntity {
+public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntity, ContainerListener {
 
 	public Hamster(EntityType<? extends Hamster> type, Level level) {
 		super(type, level);
+		this.setTame(false);
+		this.updateInventory();
+		this.setCanPickUpLoot(true);
 	}
 
 	@Override
@@ -146,6 +157,13 @@ public class Hamster extends TamableAnimal implements GeoEntity {
 			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.MALE_GENDER_TEST_STRIP.get().getDefaultInstance());
 			player.setItemInHand(hand, itemstack1);
 			return InteractionResult.SUCCESS;
+		}
+
+		if (this.isOwnedBy(player) && this.isTame() && !this.isBaby()) {
+			if (this.isTame() && player.isSecondaryUseActive() && player.isCrouching()) {
+				this.openInventory(player);
+				return InteractionResult.sidedSuccess(this.level().isClientSide);
+			}
 		}
 
 		if (this.level().isClientSide) {
@@ -573,6 +591,163 @@ public class Hamster extends TamableAnimal implements GeoEntity {
 
 		public static Breed breedFromOrdinal(int ordinal) {
 			return Breed.values()[ordinal % Breed.values().length];
+		}
+	}
+
+	public SimpleContainer inventory;
+
+	public LazyOptional<?> itemHandler = null;
+
+	public void updateInventory() {
+		SimpleContainer tempInventory = this.inventory;
+		this.inventory = new SimpleContainer(this.getInventorySize());
+
+		if(tempInventory != null) {
+			tempInventory.removeListener(this);
+			int maxSize = Math.min(tempInventory.getContainerSize(), this.inventory.getContainerSize());
+
+			for(int i = 0; i < maxSize; i++) {
+				ItemStack itemStack = tempInventory.getItem(i);
+				if(!itemStack.isEmpty()) {
+					this.inventory.setItem(i, itemStack.copy());
+				}
+			}
+		}
+		this.inventory.addListener(this);
+		this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.inventory));
+	}
+
+	@Override
+	public void dropEquipment() {
+		if(!this.level().isClientSide) {
+			super.dropEquipment();
+			Containers.dropContents(this.level(), this, this.inventory);
+		}
+	}
+
+	@Override
+	public void invalidateCaps() {
+		super.invalidateCaps();
+		if(this.itemHandler != null) {
+			LazyOptional<?> oldHandler = this.itemHandler;
+			this.itemHandler = null;
+			oldHandler.invalidate();
+		}
+	}
+
+	public int getInventorySize() {
+		return 5;
+	}
+
+	public SimpleContainer getInventory() {
+		return this.inventory;
+	}
+
+	public void openInventory(Player player) {
+		if(player instanceof ServerPlayer serverPlayer && this.isTame()) {
+			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
+				return new HamsterMenu(containerId, inventory, this.inventory, this);
+			}, this.getDisplayName()), (data) -> {
+				data.writeInt(this.getInventorySize());
+				data.writeInt(this.getId());
+			});
+		}
+	}
+
+	@Override
+	public void containerChanged(Container p_18983_) {
+		return;
+	}
+
+	public boolean hasFullInventory() {
+		for (int i = 0; i < inventory.getContainerSize(); i++) {
+			if (inventory.getItem(i).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	static final Predicate<ItemEntity> HAMSTER_SEEKS = (itemEntity) -> {
+		return !itemEntity.hasPickUpDelay() && itemEntity.isAlive() && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS);
+	};
+
+	//modified fox pickup goal
+	public class HamsterSearchForItemsGoal extends Goal {
+
+		public HamsterSearchForItemsGoal() {
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		}
+
+		public boolean canUse() {
+			if (isOrderedToSit()) {
+				return false;
+			} else if (hasFullInventory()) {
+				return false;
+			} else if (Hamster.this.getTarget() == null && Hamster.this.getLastHurtByMob() == null) {
+				if (Hamster.this.getRandom().nextInt(reducedTickDelay(10)) != 0) {
+					return false;
+				} else {
+					List<ItemEntity> list = Hamster.this.level().getEntitiesOfClass(ItemEntity.class, Hamster.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), Hamster.HAMSTER_SEEKS);
+					return !list.isEmpty();
+				}
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public void tick() {
+			List<ItemEntity> itemEntities = level().getEntitiesOfClass(ItemEntity.class, getBoundingBox().inflate(8.0D, 8.0D, 8.0D), Hamster.HAMSTER_SEEKS);
+
+			if (!itemEntities.isEmpty() && !hasFullInventory()) {
+				ItemEntity itemEntity = itemEntities.get(0);
+				getNavigation().moveTo(itemEntity, 1.2D);
+
+				if (distanceToSqr(itemEntity) < 2.0D && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS)) {
+					pickUpItem(itemEntity);
+				}
+			}
+		}
+
+		@Override
+		public void start() {
+			List<ItemEntity> itemEntities = level().getEntitiesOfClass(ItemEntity.class, getBoundingBox().inflate(8.0D, 8.0D, 8.0D), Hamster.HAMSTER_SEEKS);
+			if (!itemEntities.isEmpty()) {
+				getNavigation().moveTo(itemEntities.get(0), 1.2D);
+			}
+		}
+
+		private void pickUpItem(ItemEntity itemEntity) {
+			if (!hasFullInventory() && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS) && this.canUse()) {
+				ItemStack itemStack = itemEntity.getItem();
+
+				for (int i = 0; i < getInventory().getContainerSize(); i++) {
+					ItemStack inventoryStack = getInventory().getItem(i);
+
+					if (!inventoryStack.isEmpty() && inventoryStack.is(itemStack.getItem()) && inventoryStack.getCount() < inventoryStack.getMaxStackSize() && itemStack.is(HHTags.Items.HAMSTER_SEEKS)) {
+						int j = inventoryStack.getMaxStackSize() - inventoryStack.getCount();
+						int k = Math.min(j, itemStack.getCount());
+						inventoryStack.grow(k);
+						itemStack.shrink(k);
+
+						if (itemStack.isEmpty()) {
+							itemEntity.discard();
+							break;
+						}
+					}
+				}
+
+				if (!itemStack.isEmpty() && itemStack.is(HHTags.Items.HAMSTER_SEEKS) && this.canUse()) {
+					for (int i = 0; i < getInventory().getContainerSize(); i++) {
+						if (getInventory().getItem(i).isEmpty()) {
+							getInventory().setItem(i, itemStack);
+							itemEntity.discard();
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 

@@ -15,6 +15,12 @@ public class HamsterRender extends GeoEntityRenderer<Hamster> {
     @Override
     public void render(Hamster entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
+        if(entity.hasFullInventory()) {
+            model.getBone("cheeks").ifPresent(b -> b.setHidden(false));
+        } else {
+            model.getBone("cheeks").ifPresent(b -> b.setHidden(true));
+        }
+
         if(entity.isBaby()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
         } else {

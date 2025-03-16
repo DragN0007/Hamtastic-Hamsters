@@ -11,6 +11,7 @@ public class HHTags {
     public static class Items {
 
         public static final TagKey<Item> HAMSTER_FOOD = tag("hamster_food");
+        public static final TagKey<Item> HAMSTER_SEEKS = forgeTag("hamster_seeks");
 
         private static TagKey<Item> tag (String name) {
             return ItemTags.create(new ResourceLocation(HamtasticHamsters.MODID, name));

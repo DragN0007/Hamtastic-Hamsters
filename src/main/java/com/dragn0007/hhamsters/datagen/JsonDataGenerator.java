@@ -21,5 +21,6 @@ public class JsonDataGenerator {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         generator.addProvider(event.includeServer(), new HHRecipeMaker(packOutput));
+        generator.addProvider(event.includeClient(), new HHItemModelProvider(packOutput, existingFileHelper));
     }
 }

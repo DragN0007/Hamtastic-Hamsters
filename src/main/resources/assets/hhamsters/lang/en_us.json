@@ -1,3 +1,5 @@
 {
-  "itemGroup.hhamsters": "Hamtastic Hamsters"
+  "itemGroup.hhamsters": "Hamtastic Hamsters",
+  "item.hhamsters.hamster_spawn_egg": "Hamster Spawn Egg",
+  "entity.hhamsters.hamster": "Hamster"
 }

@@ -7,17 +7,17 @@ import software.bernie.geckolib.model.GeoModel;
 public class HamsterModel extends GeoModel<Hamster> {
 
     public enum Variant {
-        ALBINO(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_albino.png")),
-        BEIGE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_beige.png")),
-        BLACK(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_black.png")),
-        BLUE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_blue.png")),
-        CHOCOLATE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_chocolate.png")),
-        CREAM(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_cream.png")),
-        GREY(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_grey.png")),
-        LAVENDER(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_lavender.png")),
-        RUST(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_rust.png")),
-        SILVER(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_silver.png")),
-        WHITE(new ResourceLocation(HamtasticHamsters.MODID, "textures/entity/hamster/hamster_white.png"));
+        ALBINO(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_albino.png")),
+        BEIGE(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_beige.png")),
+        BLACK(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_black.png")),
+        BLUE(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_blue.png")),
+        CHOCOLATE(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_chocolate.png")),
+        CREAM(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_cream.png")),
+        GREY(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_grey.png")),
+        LAVENDER(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_lavender.png")),
+        RUST(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_rust.png")),
+        SILVER(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_silver.png")),
+        WHITE(new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/hamster_white.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {

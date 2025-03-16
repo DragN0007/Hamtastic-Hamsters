@@ -1,0 +1,65 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beetroot",
+    "minecraft:carrot",
+    "minecraft:potato",
+    "minecraft:wheat",
+    "minecraft:melon",
+    "minecraft:pumpkin",
+    "minecraft:melon_slice",
+    "minecraft:apple",
+    "minecraft:sweet_berries",
+    "minecraft:wheat_seeds",
+    "minecraft:beetroot_seeds",
+    "minecraft:pumpkin_seeds",
+    "minecraft:melon_seeds",
+    "minecraft:torchflower_seeds",
+    "minecraft:pitcher_pod",
+
+    {
+      "id": "#forge:vegetables",
+      "required": false
+    },
+
+    {
+      "id": "#forge:vegetable",
+      "required": false
+    },
+
+    {
+      "id": "#forge:wheat",
+      "required": false
+    },
+
+    {
+      "id": "#forge:grains",
+      "required": false
+    },
+
+    {
+      "id": "#forge:grain",
+      "required": false
+    },
+
+    {
+      "id": "#forge:fruit",
+      "required": false
+    },
+
+    {
+      "id": "#forge:fruits",
+      "required": false
+    },
+
+    {
+      "id": "#forge:crops",
+      "required": false
+    },
+
+    {
+      "id": "#forge:seeds",
+      "required": false
+    }
+  ]
+}
