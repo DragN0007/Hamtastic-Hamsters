@@ -1,8 +1,11 @@
 package com.dragn0007.hhamsters.entities.hamster;
 
+import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class HamsterRender extends GeoEntityRenderer<Hamster> {
@@ -10,12 +13,13 @@ public class HamsterRender extends GeoEntityRenderer<Hamster> {
     public HamsterRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new HamsterModel());
         this.addRenderLayer(new HamsterMarkingLayer(this));
+        this.addRenderLayer(new HamsterDwarfStripeLayer(this));
     }
 
     @Override
-    public void render(Hamster entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void preRender(PoseStack poseStack, Hamster entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-        if(entity.hasFullInventory()) {
+        if(entity.isPuffed()) {
             model.getBone("cheeks").ifPresent(b -> b.setHidden(false));
         } else {
             model.getBone("cheeks").ifPresent(b -> b.setHidden(true));
@@ -27,7 +31,7 @@ public class HamsterRender extends GeoEntityRenderer<Hamster> {
             poseStack.scale(1F, 1F, 1F);
         }
 
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
 }

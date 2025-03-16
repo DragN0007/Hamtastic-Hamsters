@@ -19,6 +19,7 @@ public class HHItemGroup {
                         .displayItems((displayParameters, output) -> {
 
                             output.accept(HHItems.HAMSTER_SPAWN_EGG.get());
+                            output.accept(HHItems.HAMSTER_FOOD.get());
 
                     }).build());
 

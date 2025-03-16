@@ -1,5 +1,8 @@
 {
   "itemGroup.hhamsters": "Hamtastic Hamsters",
   "item.hhamsters.hamster_spawn_egg": "Hamster Spawn Egg",
-  "entity.hhamsters.hamster": "Hamster"
+  "entity.hhamsters.hamster": "Hamster",
+
+  "tooltip.hhamsters.wandering.tooltip": "Your Hamster is Wandering",
+  "tooltip.hhamsters.following.tooltip": "Your Hamster is Following"
 }

@@ -18,7 +18,7 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<Hamster>> HAMSTER_ENTITY = ENTITY_TYPES.register("hamster",
             () -> EntityType.Builder.of(Hamster::new,
                             MobCategory.CREATURE)
-                    .sized(0.4f,0.4f)
+                    .sized(0.5f,0.5f)
                     .build(new ResourceLocation(LivestockOverhaul.MODID,"hamster").toString()));
 
 }

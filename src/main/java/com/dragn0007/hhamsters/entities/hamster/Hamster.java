@@ -6,11 +6,15 @@ import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.dragn0007.hhamsters.HamtasticHamsters;
+import com.dragn0007.hhamsters.entities.ai.HamsterFollowOwnerGoal;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
 import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,6 +29,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.animal.PolarBear;
@@ -32,6 +37,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -44,6 +52,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarrotBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
@@ -94,15 +104,15 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new PanicGoal(this, 1.8F));
-		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
-		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-		this.goalSelector.addGoal(5, new PickCropsGoal(this));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
+		this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+		this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 2.0F));
+		this.goalSelector.addGoal(3, new HamsterSearchForItemsGoal());
+		this.goalSelector.addGoal(3, new Hamster.PickCropsGoal(this));
+
+		this.goalSelector.addGoal(6, new HamsterFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
 
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
 				livingEntity.getType().is(LOTags.Entity_Types.WOLVES) && (livingEntity instanceof TamableAnimal && !((TamableAnimal) livingEntity).isTame()) && !this.isTame()
@@ -139,6 +149,29 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
 				livingEntity instanceof Player && !this.isTame() && livingEntity.isCrouching()
 		));
+	}
+
+	public boolean hurt(DamageSource damageSource, float amount) {
+		if (damageSource.getEntity() instanceof Player player) {
+
+			if(!this.level().isClientSide && this.isTame() && !this.isOrderedToSit() && !this.isInSittingPose() && !this.wasToldToWander())
+			{
+				if (this.isOwnedBy(player) && player.isShiftKeyDown()) {
+					this.setToldToWander(true);
+					player.displayClientMessage(Component.translatable("tooltip.hhamsters.wandering.tooltip").withStyle(ChatFormatting.GOLD), true);
+				}
+				return false;
+			}
+
+			if (!this.level().isClientSide && this.isTame() && !this.isOrderedToSit() && !this.isInSittingPose() && this.wasToldToWander()) {
+				if (this.isOwnedBy(player) && player.isShiftKeyDown()) {
+					this.setToldToWander(false);
+					player.displayClientMessage(Component.translatable("tooltip.hhamsters.following.tooltip").withStyle(ChatFormatting.GOLD), true);
+				}
+				return false;
+			}
+		}
+		return super.hurt(damageSource, amount);
 	}
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -216,6 +249,20 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		}
 	}
 
+	public boolean toldToWander = false;
+
+	public boolean wasToldToWander() {
+		return this.toldToWander;
+	}
+
+	public boolean getToldToWander() {
+		return this.toldToWander;
+	}
+
+	public void setToldToWander(boolean toldToWander) {
+		this.toldToWander = toldToWander;
+	}
+
 	@Override
 	public float getStepHeight() {
 		return 1F;
@@ -232,15 +279,17 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		if (tAnimationState.isMoving()) {
 			if (currentSpeed > speedThreshold) {
 				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-				controller.setAnimationSpeed(1.8);
+				controller.setAnimationSpeed(2.0);
 			} else {
 				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-				controller.setAnimationSpeed(1.0);
+				controller.setAnimationSpeed(1.2);
 			}
 		} else if (this.isInSittingPose()) {
 			controller.setAnimation(RawAnimation.begin().then("sploot", Animation.LoopType.LOOP));
+			controller.setAnimationSpeed(0.8);
 		} else {
 			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+			controller.setAnimationSpeed(0.8);
 		}
 
 		return PlayState.CONTINUE;
@@ -259,17 +308,13 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 	int moreCropsTicks;
 
-	boolean wantsToGarden() {
-		return this.moreCropsTicks == 0;
-	}
-
 	static class PickCropsGoal extends MoveToBlockGoal {
 		public final Hamster hamster;
 		public boolean wantsToPick;
 		public boolean canPick;
 
 		public PickCropsGoal(Hamster hamster) {
-			super(hamster, (double)0.7F, 16);
+			super(hamster, 0.7F, 16);
 			this.hamster = hamster;
 		}
 
@@ -280,7 +325,6 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 				}
 
 				this.canPick = false;
-				this.wantsToPick = this.hamster.wantsToGarden();
 				this.wantsToPick = true;
 			}
 
@@ -291,37 +335,56 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			return this.canPick && super.canContinueToUse();
 		}
 
+		public static Property<Integer> getCropProperty(BlockState state, String propertyName) {
+			Block block = state.getBlock();
+			if (block instanceof CropBlock) {
+				for (Property<?> prop : state.getProperties()) {
+					if (prop instanceof IntegerProperty && prop.getName().equals(propertyName)) {
+						return (Property<Integer>) prop;
+					}
+				}
+			}
+			return null;
+		}
+
 		public void tick() {
 			super.tick();
-			this.hamster.getLookControl().setLookAt((double)this.blockPos.getX() + 0.5D, (double)(this.blockPos.getY() + 1), (double)this.blockPos.getZ() + 0.5D, 10.0F, (float)this.hamster.getMaxHeadXRot());
+
+			this.hamster.getLookControl().setLookAt(
+					(double)this.blockPos.getX() + 0.5D,
+					this.blockPos.getY() + 1,
+					(double)this.blockPos.getZ() + 0.5D, 10.0F,
+					(float)this.hamster.getMaxHeadXRot());
+
 			if (this.isReachedTarget()) {
 				Level level = this.hamster.level();
 				BlockPos blockpos = this.blockPos.above();
 				BlockState blockstate = level.getBlockState(blockpos);
 				Block block = blockstate.getBlock();
-				if (this.canPick && block instanceof CropBlock) {
-					int i = blockstate.getValue(CropBlock.AGE);
-					if (i == 0) {
-						level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), CropBlock.MAX_AGE);
-						level.destroyBlock(blockpos, true, this.hamster);
-					} else {
-						level.setBlock(blockpos, blockstate.setValue(CarrotBlock.AGE, Integer.valueOf(i - 1)), CropBlock.MAX_AGE);
-						level.levelEvent(2001, blockpos, Block.getId(blockstate));
-					}
+				Property<Integer> age = getCropProperty(blockstate, "age");
 
-					this.hamster.moreCropsTicks = 40;
+				if (this.canPick && block instanceof CropBlock) {
+					blockstate.getBlock().getDrops(blockstate, (ServerLevel) level, blockpos, null).forEach
+							(stack -> level.addFreshEntity(new ItemEntity(level,
+									blockpos.getX() + 0.5,
+									blockpos.getY() + 0.5,
+									blockpos.getZ() + 0.5, stack)));
+
+					level.setBlockAndUpdate(blockpos, blockstate.setValue(age, Integer.valueOf(1)));
+					level.levelEvent(2001, blockpos, Block.getId(blockstate));
 				}
 
+				this.hamster.moreCropsTicks = 40;
 				this.canPick = false;
-				this.nextStartTick = 10;
+				this.nextStartTick = 20;
 			}
 
 		}
 
-		public boolean isValidTarget(LevelReader p_29785_, BlockPos p_29786_) {
-			BlockState blockstate = p_29785_.getBlockState(p_29786_);
+		public boolean isValidTarget(LevelReader levelReader, BlockPos blockPos) {
+			BlockState blockstate = levelReader.getBlockState(blockPos);
 			if (blockstate.is(Blocks.FARMLAND) && this.wantsToPick && !this.canPick) {
-				blockstate = p_29785_.getBlockState(p_29786_.above());
+				blockstate = levelReader.getBlockState(blockPos.above());
 				if (blockstate.getBlock() instanceof CropBlock && ((CropBlock)blockstate.getBlock()).isMaxAge(blockstate)) {
 					this.canPick = true;
 					return true;
@@ -433,6 +496,26 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		if (tag.contains("Breed")) {
 			this.setBreed(tag.getInt("Breed"));
 		}
+
+		if (tag.contains("Wandering")) {
+			this.setToldToWander(tag.getBoolean("Wandering"));
+		}
+
+		this.updateInventory();
+
+		if(this.isTame()) {
+			ListTag listTag = tag.getList("Items", 10);
+
+			for(int i = 0; i < listTag.size(); i++) {
+				CompoundTag compoundTag = listTag.getCompound(i);
+				int j = compoundTag.getByte("Slot") & 255;
+				if(j < this.inventory.getContainerSize()) {
+					this.inventory.setItem(j, ItemStack.of(compoundTag));
+				}
+			}
+		}
+
+		this.setCanPickUpLoot(true);
 	}
 
 	@Override
@@ -449,6 +532,23 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		tag.putInt("Gender", this.getGender());
 
 		tag.putInt("Breed", this.getBreed());
+
+		tag.putBoolean("Wandering", this.getToldToWander());
+
+		if(this.isTame()) {
+			ListTag listTag = new ListTag();
+
+			for(int i = 0; i < this.inventory.getContainerSize(); i++) {
+				ItemStack itemStack = this.inventory.getItem(i);
+				if(!itemStack.isEmpty()) {
+					CompoundTag compoundTag = new CompoundTag();
+					compoundTag.putByte("Slot", (byte) i);
+					itemStack.save(compoundTag);
+					listTag.add(compoundTag);
+				}
+			}
+			tag.put("Items", listTag);
+		}
 	}
 
 	@Override
@@ -636,7 +736,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	}
 
 	public int getInventorySize() {
-		return 5;
+		return 3;
 	}
 
 	public SimpleContainer getInventory() {
@@ -672,7 +772,16 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		return !itemEntity.hasPickUpDelay() && itemEntity.isAlive() && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS);
 	};
 
-	//modified fox pickup goal
+	public boolean puff = false;
+
+	public boolean isPuffed() {
+		return this.puff;
+	}
+
+	public void setPuffed(boolean puff) {
+		this.puff = puff;
+	}
+
 	public class HamsterSearchForItemsGoal extends Goal {
 
 		public HamsterSearchForItemsGoal() {
@@ -685,7 +794,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			} else if (hasFullInventory()) {
 				return false;
 			} else if (Hamster.this.getTarget() == null && Hamster.this.getLastHurtByMob() == null) {
-				if (Hamster.this.getRandom().nextInt(reducedTickDelay(10)) != 0) {
+				if (Hamster.this.getRandom().nextInt(reducedTickDelay(5)) != 0) {
 					return false;
 				} else {
 					List<ItemEntity> list = Hamster.this.level().getEntitiesOfClass(ItemEntity.class, Hamster.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), Hamster.HAMSTER_SEEKS);
@@ -704,7 +813,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 				ItemEntity itemEntity = itemEntities.get(0);
 				getNavigation().moveTo(itemEntity, 1.2D);
 
-				if (distanceToSqr(itemEntity) < 2.0D && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS)) {
+				if (distanceToSqr(itemEntity) < 4.0D && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS)) {
 					pickUpItem(itemEntity);
 				}
 			}
@@ -718,7 +827,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			}
 		}
 
-		private void pickUpItem(ItemEntity itemEntity) {
+		public void pickUpItem(ItemEntity itemEntity) {
 			if (!hasFullInventory() && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS) && this.canUse()) {
 				ItemStack itemStack = itemEntity.getItem();
 

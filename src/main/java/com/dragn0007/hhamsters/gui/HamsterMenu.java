@@ -26,7 +26,7 @@ public class HamsterMenu extends AbstractContainerMenu {
 
         if (this.hamster.isTame()) {
             for(int j = 0; j < 3; ++j) {
-                this.addSlot(new Slot(this.container, j, 61 + j * 18, 20));
+                this.addSlot(new Slot(this.container, j, 62 + j * 18, 20));
             }
         }
 
