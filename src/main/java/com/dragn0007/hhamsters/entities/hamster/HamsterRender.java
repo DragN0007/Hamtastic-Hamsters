@@ -1,8 +1,5 @@
 package com.dragn0007.hhamsters.entities.hamster;
 
-import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
-import com.dragn0007.dragnlivestock.entities.rabbit.ORabbitMarkingLayer;
-import com.dragn0007.dragnlivestock.entities.rabbit.ORabbitModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

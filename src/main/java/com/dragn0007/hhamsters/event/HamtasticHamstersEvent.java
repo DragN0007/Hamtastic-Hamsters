@@ -1,12 +1,9 @@
 package com.dragn0007.hhamsters.event;
 
-import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
-import com.dragn0007.dragnlivestock.entities.horse.OHorseRender;
 import com.dragn0007.hhamsters.HamtasticHamsters;
 import com.dragn0007.hhamsters.blocks.HHBlocks;
 import com.dragn0007.hhamsters.blocks.pixel_placement.util.PixelPlacerEntityRenderer;
 import com.dragn0007.hhamsters.entities.hamster.Hamster;
-import com.dragn0007.hhamsters.entities.hamster.HamsterModel;
 import com.dragn0007.hhamsters.entities.hamster.HamsterRender;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
 import com.dragn0007.hhamsters.gui.HHMenuTypes;

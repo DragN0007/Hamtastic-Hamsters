@@ -365,7 +365,7 @@ public class Hamster extends TamableAnimal implements GeoEntity {
 	}
 	public void setOverlayVariant(int overlayVariant) {
 		this.entityData.set(OVERLAY, overlayVariant);
-		this.entityData.set(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.overlayFromOrdinal(overlayVariant).resourceLocation);
+		this.entityData.set(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.patternFromOrdinal(overlayVariant).resourceLocation);
 	}
 
 	public void setVariantTexture(String variant) {
