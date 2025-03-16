@@ -12,11 +12,11 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class HamsterScreen extends AbstractContainerScreen<HamsterMenu> {
     public static final ResourceLocation INVENTORY_LOCATION = new ResourceLocation(HamtasticHamsters.MODID, "textures/gui/hamster.png");
-    public final Hamster labrador;
+    public final Hamster hamster;
 
-    public HamsterScreen(HamsterMenu labradorMenu, Inventory inventory, Component component) {
-        super(labradorMenu, inventory, component);
-        this.labrador = labradorMenu.hamster;
+    public HamsterScreen(HamsterMenu hamsterMenu, Inventory inventory, Component component) {
+        super(hamsterMenu, inventory, component);
+        this.hamster = hamsterMenu.hamster;
         this.imageHeight = 133;
         this.inventoryLabelY = this.imageHeight - 94;
     }
@@ -30,7 +30,7 @@ public class HamsterScreen extends AbstractContainerScreen<HamsterMenu> {
         int y = (this.height - this.imageHeight) / 2;
         graphics.blit(INVENTORY_LOCATION, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
-        if (this.labrador.isTame()) {
+        if (this.hamster.isTame()) {
             graphics.blit(INVENTORY_LOCATION, x, y, 0, 0, this.imageWidth, this.imageHeight);
         }
     }

@@ -15,9 +15,10 @@ public class HHItemGroup {
                 DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HamtasticHamsters.MODID);
 
         public static final RegistryObject<CreativeModeTab> HAMSTERS = CREATIVE_MODE_TABS.register("hamsters",
-                () -> CreativeModeTab.builder().icon(() -> new ItemStack(HHItems.HAMSTERS.get())).title(Component.translatable("itemGroup.giddy_pigs"))
+                () -> CreativeModeTab.builder().icon(() -> new ItemStack(HHItems.HAMSTERS.get())).title(Component.translatable("itemGroup.hhamsters"))
                         .displayItems((displayParameters, output) -> {
 
+                            output.accept(HHItems.HAMSTER_SPAWN_EGG.get());
 
                     }).build());
 
