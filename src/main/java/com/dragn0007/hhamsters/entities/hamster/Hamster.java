@@ -30,6 +30,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.animal.PolarBear;
@@ -66,6 +67,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -144,6 +146,10 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
 				livingEntity instanceof Player && !this.isTame() && livingEntity.isCrouching()
+		));
+
+		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity ->
+				entity instanceof Hamster && ((TamableAnimal) entity).isTame() && ((((Hamster) entity).isFemale() && this.isFemale()) || (((Hamster) entity).isMale() && this.isMale())) && this.isTame()
 		));
 	}
 
@@ -260,6 +266,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 					itemstack.shrink(1);
 				}
 
+				this.gameEvent(GameEvent.ENTITY_INTERACT);
 				return InteractionResult.sidedSuccess(this.level().isClientSide);
 			}
 		}
@@ -279,7 +286,13 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 						itemstack.shrink(1);
 					}
 
-					this.gameEvent(GameEvent.ENTITY_INTERACT);
+					int i = this.getAge();
+					if (!this.level().isClientSide && i == 0 && this.canFallInLove()) {
+						this.usePlayerItem(player, hand, itemstack);
+						this.setInLove(player);
+						return InteractionResult.SUCCESS;
+					}
+
 					return InteractionResult.SUCCESS;
 				}
 

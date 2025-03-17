@@ -29,6 +29,7 @@ public class HamsterModel extends GeoModel<Hamster> {
     }
     public static final ResourceLocation ANIMATION = new ResourceLocation(HamtasticHamsters.MODID, "animations/hamster.animation.json");
     public static final ResourceLocation DWARF_ANIMATION = new ResourceLocation(HamtasticHamsters.MODID, "animations/hamster_dwarf.animation.json");
+    public static final ResourceLocation BABY = new ResourceLocation(HamtasticHamsters.MODID, "textures/hamster/baby/hamster_baby.png");
 
     @Override
     public ResourceLocation getModelResource(Hamster object) {
@@ -37,6 +38,9 @@ public class HamsterModel extends GeoModel<Hamster> {
 
     @Override
     public ResourceLocation getTextureResource(Hamster object) {
+        if (object.isBaby()) {
+            return BABY;
+        }
         return object.getTextureResource();
     }
 
