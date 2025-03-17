@@ -171,7 +171,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	}
 
 	public int fedCounter = 0;
-	public int standCounter = this.random.nextInt(400) + 400;
+	public int standCounter = this.random.nextInt(3600) + 3600;
 	public int stayStandingCounter = 0;
 
 	@Override
@@ -194,7 +194,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			this.stayStandingCounter++;
 			setStanding(true);
 		    if (this.stayStandingCounter >= 150) {
-				this.standCounter = this.random.nextInt(400) + 400;
+				this.standCounter = this.random.nextInt(3600) + 3600;
 				this.stayStandingCounter = 0;
 				setStanding(false);
 			}
