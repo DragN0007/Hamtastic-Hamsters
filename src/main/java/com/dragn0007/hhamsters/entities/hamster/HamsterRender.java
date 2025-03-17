@@ -1,6 +1,5 @@
 package com.dragn0007.hhamsters.entities.hamster;
 
-import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,7 +18,7 @@ public class HamsterRender extends GeoEntityRenderer<Hamster> {
     @Override
     public void preRender(PoseStack poseStack, Hamster entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-        if(entity.isPuffed()) {
+        if(entity.isFed()) {
             model.getBone("cheeks").ifPresent(b -> b.setHidden(false));
         } else {
             model.getBone("cheeks").ifPresent(b -> b.setHidden(true));

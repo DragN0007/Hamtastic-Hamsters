@@ -12,6 +12,7 @@ import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.animal.PolarBear;
@@ -37,9 +37,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -49,7 +46,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CarrotBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -174,6 +170,57 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		return super.hurt(damageSource, amount);
 	}
 
+	public int fedCounter = 0;
+	public int standCounter = this.random.nextInt(400) + 400;
+	public int stayStandingCounter = 0;
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		fedCounter++;
+
+		if (fedCounter >= 2400) {
+			this.setFed(false);
+		}
+
+		standCounter--;
+
+		if (isStanding()) {
+			navigation.stop();
+		}
+
+		if (--this.standCounter <= 0) {
+			this.stayStandingCounter++;
+			setStanding(true);
+		    if (this.stayStandingCounter >= 150) {
+				this.standCounter = this.random.nextInt(400) + 400;
+				this.stayStandingCounter = 0;
+				setStanding(false);
+			}
+		}
+
+	}
+
+	private boolean fed = false;
+	public boolean isFed() {
+		return this.fed;
+	}
+	public boolean getPlantsSheared() {
+		return this.fed;
+	}
+	public void setFed(boolean fed) {
+		this.fed = fed;
+	}
+
+	private boolean stand = false;
+	public boolean isStanding() {
+		return this.stand;
+	}
+	public void setStanding(boolean standing) {
+		this.stand = standing;
+	}
+
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		Item item = itemstack.getItem();
@@ -199,13 +246,35 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			}
 		}
 
+		if (this.isTame()) {
+			if (this.isFood(itemstack)) {
+				this.setFed(true);
+				fedCounter = 0;
+				this.level().addParticle(ParticleTypes.HEART, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.7D, 0.7D, 0.7D);
+
+				if (this.getHealth() < this.getMaxHealth()) {
+					this.heal((float) itemstack.getFoodProperties(this).getNutrition());
+				}
+
+				if (!player.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
+
+				return InteractionResult.sidedSuccess(this.level().isClientSide);
+			}
+		}
+
 		if (this.level().isClientSide) {
 			boolean flag = this.isOwnedBy(player) || this.isTame() || this.isFood(itemstack) && !this.isTame();
 			return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else {
 			if (this.isTame()) {
-				if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-					this.heal((float)itemstack.getFoodProperties(this).getNutrition());
+				if (this.isFood(itemstack)) {
+
+					if (this.getHealth() < this.getMaxHealth()) {
+						this.heal((float) itemstack.getFoodProperties(this).getNutrition());
+					}
+
 					if (!player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 					}
@@ -284,6 +353,9 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 				controller.setAnimationSpeed(1.2);
 			}
+		} else if (this.isStanding()) {
+			controller.setAnimation(RawAnimation.begin().then("stand", Animation.LoopType.LOOP));
+			controller.setAnimationSpeed(0.8);
 		} else if (this.isInSittingPose()) {
 			controller.setAnimation(RawAnimation.begin().then("sploot", Animation.LoopType.LOOP));
 			controller.setAnimationSpeed(0.8);
@@ -501,6 +573,10 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			this.setToldToWander(tag.getBoolean("Wandering"));
 		}
 
+		if (tag.contains("Fed")) {
+			this.setFed(tag.getBoolean("Fed"));
+		}
+
 		this.updateInventory();
 
 		if(this.isTame()) {
@@ -535,6 +611,8 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 		tag.putBoolean("Wandering", this.getToldToWander());
 
+		tag.putBoolean("Fed", this.getPlantsSheared());
+
 		if(this.isTame()) {
 			ListTag listTag = new ListTag();
 
@@ -549,6 +627,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 			}
 			tag.put("Items", listTag);
 		}
+
 	}
 
 	@Override
@@ -771,16 +850,6 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	static final Predicate<ItemEntity> HAMSTER_SEEKS = (itemEntity) -> {
 		return !itemEntity.hasPickUpDelay() && itemEntity.isAlive() && itemEntity.getItem().is(HHTags.Items.HAMSTER_SEEKS);
 	};
-
-	public boolean puff = false;
-
-	public boolean isPuffed() {
-		return this.puff;
-	}
-
-	public void setPuffed(boolean puff) {
-		this.puff = puff;
-	}
 
 	public class HamsterSearchForItemsGoal extends Goal {
 

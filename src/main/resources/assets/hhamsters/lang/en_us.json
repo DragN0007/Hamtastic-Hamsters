@@ -2,6 +2,7 @@
   "itemGroup.hhamsters": "Hamtastic Hamsters",
   "item.hhamsters.hamster_spawn_egg": "Hamster Spawn Egg",
   "entity.hhamsters.hamster": "Hamster",
+  "item.hhamsters.hamster_food": "Hamster Food",
 
   "tooltip.hhamsters.wandering.tooltip": "Your Hamster is Wandering",
   "tooltip.hhamsters.following.tooltip": "Your Hamster is Following"
