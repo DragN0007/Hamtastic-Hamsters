@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "facing=east,open=false": {
+      "model": "hhamsters:block/wire_panel_door",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=east,open=true": {
+      "model": "hhamsters:block/wire_panel_door_open",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=north,open=false": {
+      "model": "hhamsters:block/wire_panel_door",
+      "uvlock": true
+    },
+    "facing=north,open=true": {
+      "model": "hhamsters:block/wire_panel_door_open",
+      "uvlock": true
+    },
+    "facing=south,open=false": {
+      "model": "hhamsters:block/wire_panel_door",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,open=true": {
+      "model": "hhamsters:block/wire_panel_door_open",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=west,open=false": {
+      "model": "hhamsters:block/wire_panel_door",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=west,open=true": {
+      "model": "hhamsters:block/wire_panel_door_open",
+      "uvlock": true,
+      "y": 270
+    }
+  }
+}

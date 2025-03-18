@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hhamsters:block/wire_panel",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hhamsters:block/wire_panel"
+    },
+    "facing=south": {
+      "model": "hhamsters:block/wire_panel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hhamsters:block/wire_panel",
+      "y": 270
+    }
+  }
+}

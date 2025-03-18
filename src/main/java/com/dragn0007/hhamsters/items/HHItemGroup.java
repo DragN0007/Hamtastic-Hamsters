@@ -1,6 +1,7 @@
 package com.dragn0007.hhamsters.items;
 
 import com.dragn0007.hhamsters.HamtasticHamsters;
+import com.dragn0007.hhamsters.blocks.HHBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,6 +21,9 @@ public class HHItemGroup {
 
                             output.accept(HHItems.HAMSTER_SPAWN_EGG.get());
                             output.accept(HHItems.HAMSTER_FOOD.get());
+                            output.accept(HHBlocks.WIRE_PANEL.get());
+                            output.accept(HHBlocks.WIRE_PANEL_SINGLE_DOOR.get());
+                            output.accept(HHBlocks.WIRE_PANEL_DOOR.get());
 
                     }).build());
 

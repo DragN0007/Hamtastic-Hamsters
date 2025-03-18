@@ -4,6 +4,10 @@
   "entity.hhamsters.hamster": "Hamster",
   "item.hhamsters.hamster_food": "Hamster Food",
 
+  "block.hhamsters.wire_panel": "Wire Panel",
+  "block.hhamsters.wire_panel_door": "Wire Panel Double Door",
+  "block.hhamsters.wire_panel_single_door": "Wire Panel Single Door",
+
   "tooltip.hhamsters.wandering.tooltip": "Your Hamster is Wandering",
   "tooltip.hhamsters.following.tooltip": "Your Hamster is Following"
 }

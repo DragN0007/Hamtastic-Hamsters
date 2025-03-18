@@ -10,6 +10,7 @@ import com.dragn0007.hhamsters.entities.ai.HamsterFollowOwnerGoal;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
 import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
+import com.dragn0007.hhamsters.util.HamtasticHamstersCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,7 +68,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -91,7 +91,8 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 2.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.17F);
+				.add(Attributes.MOVEMENT_SPEED, 0.17F)
+				.add(Attributes.ATTACK_DAMAGE, 0.5D);
 	}
 
 	public static final Ingredient FOOD_ITEMS = Ingredient.of(HHTags.Items.HAMSTER_FOOD);
@@ -103,6 +104,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
 		this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -141,16 +143,11 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		));
 
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
-				livingEntity instanceof Villager && !this.isTame()
-		));
-
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
 				livingEntity instanceof Player && !this.isTame() && livingEntity.isCrouching()
 		));
 
-		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity ->
-				entity instanceof Hamster && ((TamableAnimal) entity).isTame() && ((((Hamster) entity).isFemale() && this.isFemale()) || (((Hamster) entity).isMale() && this.isMale())) && this.isTame()
-		));
+		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 2, true, false,
+				entity -> entity instanceof Hamster && this.isTame() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
 	}
 
 	public boolean hurt(DamageSource damageSource, float amount) {
@@ -259,7 +256,14 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 				this.level().addParticle(ParticleTypes.HEART, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.7D, 0.7D, 0.7D);
 
 				if (this.getHealth() < this.getMaxHealth()) {
-					this.heal((float) itemstack.getFoodProperties(this).getNutrition());
+					this.heal((float) 2.0);
+				}
+
+				int i = this.getAge();
+				if (!this.level().isClientSide && i == 0 && this.canFallInLove()) {
+					this.usePlayerItem(player, hand, itemstack);
+					this.setInLove(player);
+					return InteractionResult.SUCCESS;
 				}
 
 				if (!player.getAbilities().instabuild) {

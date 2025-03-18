@@ -22,5 +22,6 @@ public class JsonDataGenerator {
 
         generator.addProvider(event.includeServer(), new HHRecipeMaker(packOutput));
         generator.addProvider(event.includeClient(), new HHItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeServer(), new HHWorldGenerator(packOutput, lookupProvider));
     }
 }
