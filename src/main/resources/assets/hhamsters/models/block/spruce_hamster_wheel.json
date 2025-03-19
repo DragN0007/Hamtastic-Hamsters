@@ -1,0 +1,6 @@
+{
+  "parent": "hhamsters:block/parent/hamster_wheel",
+  "textures": {
+    "wheel": "hhamsters:block/spruce_hamster_wheel"
+  }
+}

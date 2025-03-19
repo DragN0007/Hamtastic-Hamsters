@@ -7,6 +7,8 @@
   "block.hhamsters.wire_panel": "Wire Panel",
   "block.hhamsters.wire_panel_door": "Wire Panel Double Door",
   "block.hhamsters.wire_panel_single_door": "Wire Panel Single Door",
+  "block.hhamsters.spruce_hamster_wheel": "Hamster Wheel",
+  "block.hhamsters.hamster_bedding": "Hamster Bedding",
 
   "tooltip.hhamsters.wandering.tooltip": "Your Hamster is Wandering",
   "tooltip.hhamsters.following.tooltip": "Your Hamster is Following"

@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "layers=1": {
+      "model": "hhamsters:block/bedding_height2"
+    },
+    "layers=2": {
+      "model": "hhamsters:block/bedding_height4"
+    },
+    "layers=3": {
+      "model": "hhamsters:block/bedding_height6"
+    },
+    "layers=4": {
+      "model": "hhamsters:block/bedding_height8"
+    },
+    "layers=5": {
+      "model": "hhamsters:block/bedding_height10"
+    },
+    "layers=6": {
+      "model": "hhamsters:block/bedding_height12"
+    },
+    "layers=7": {
+      "model": "hhamsters:block/bedding_height14"
+    },
+    "layers=8": {
+      "model": "hhamsters:block/bedding_height16"
+    }
+  }
+}

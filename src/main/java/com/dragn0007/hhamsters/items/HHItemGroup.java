@@ -24,6 +24,8 @@ public class HHItemGroup {
                             output.accept(HHBlocks.WIRE_PANEL.get());
                             output.accept(HHBlocks.WIRE_PANEL_SINGLE_DOOR.get());
                             output.accept(HHBlocks.WIRE_PANEL_DOOR.get());
+                            output.accept(HHBlocks.SPRUCE_HAMSTER_WHEEL.get());
+                            output.accept(HHBlocks.HAMSTER_BEDDING.get());
 
                     }).build());
 

@@ -1,3 +1,13 @@
-// 1.20.1	2025-03-16T05:14:07.8437377	Recipes
+// 1.20.1	2025-03-19T03:06:07.5577975	Recipes
+fa2abb3580aa043e64e20657ad24e53e5d13d763 data/hhamsters/advancements/recipes/misc/hamster_bedding.json
 72ad3f11b14a6b08fd2b703c29cb02b08cb20ea2 data/hhamsters/advancements/recipes/misc/hamster_food.json
+16045c11d2cdea8780e8161c8f8c228891ea15d3 data/hhamsters/advancements/recipes/misc/spruce_hamster_wheel.json
+20353d62a7a0d7e7b2d56168423132286311c6ba data/hhamsters/advancements/recipes/misc/wire_panel.json
+d13fe21e806a693c11ae5de8c17d4ff6d23a38da data/hhamsters/advancements/recipes/misc/wire_panel_door.json
+fbe73ea42cd97b884124f8154128fb34a4fe7461 data/hhamsters/advancements/recipes/misc/wire_panel_single_door.json
+40c2bbae3d57f3e0f51860bc6a9a22ce555e7596 data/hhamsters/recipes/hamster_bedding.json
 27b6784bcbf3ed9ce1f588bf12f6254a7232f652 data/hhamsters/recipes/hamster_food.json
+374c6a79b57d8408ed9f4fcefe3d2282e8f58cf3 data/hhamsters/recipes/spruce_hamster_wheel.json
+3e6c33e0dac1839ee728079c332d0e40f641f98e data/hhamsters/recipes/wire_panel.json
+adf7764af8bca834d6b75db21f9b3abce690962a data/hhamsters/recipes/wire_panel_door.json
+80048f51a73c8b8340bba360f0bb95d68898343e data/hhamsters/recipes/wire_panel_single_door.json

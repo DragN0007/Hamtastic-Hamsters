@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_nugget"
+    },
+    "B": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "BAA",
+    "BAA"
+  ],
+  "result": {
+    "count": 2,
+    "item": "hhamsters:wire_panel_single_door"
+  },
+  "show_notification": true
+}

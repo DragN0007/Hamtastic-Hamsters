@@ -1,13 +1,12 @@
 package com.dragn0007.hhamsters.datagen;
 
+import com.dragn0007.hhamsters.blocks.HHBlocks;
 import com.dragn0007.hhamsters.items.HHItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import java.util.function.Consumer;
@@ -19,6 +18,53 @@ public class HHRecipeMaker extends RecipeProvider implements IConditionBuilder {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, HHBlocks.HAMSTER_BEDDING.get(), 16)
+                .requires(Items.PAPER)
+                .requires(Items.PAPER)
+                .requires(Items.STICK)
+                .requires(Items.STICK)
+                .unlockedBy("has_stick", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.STICK)
+                        .build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.SPRUCE_HAMSTER_WHEEL.get())
+                .define('A', Blocks.SPRUCE_PLANKS)
+                .define('B', Items.STICK)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .unlockedBy("has_planks", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Blocks.SPRUCE_PLANKS).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.WIRE_PANEL.get(), 8)
+                .define('A', Items.IRON_NUGGET)
+                .define('B', Items.IRON_INGOT)
+                .pattern("BAB")
+                .pattern("BAB")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_INGOT).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.WIRE_PANEL_SINGLE_DOOR.get(), 2)
+                .define('A', Items.IRON_NUGGET)
+                .define('B', Items.IRON_INGOT)
+                .pattern("BAA")
+                .pattern("BAA")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_INGOT).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.WIRE_PANEL_DOOR.get(), 2)
+                .define('A', Items.IRON_NUGGET)
+                .define('B', Items.IRON_INGOT)
+                .pattern("ABA")
+                .pattern("BAB")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_INGOT).build()))
+                .save(pFinishedRecipeConsumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, HHItems.HAMSTER_FOOD.get(), 2)
                 .requires(Items.PUMPKIN_SEEDS)

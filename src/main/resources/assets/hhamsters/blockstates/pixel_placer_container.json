@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hhamsters:block/pixel_placer_container"
+    }
+  }
+}

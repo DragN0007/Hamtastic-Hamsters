@@ -10,7 +10,6 @@ import com.dragn0007.hhamsters.entities.ai.HamsterFollowOwnerGoal;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
 import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
-import com.dragn0007.hhamsters.util.HamtasticHamstersCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
