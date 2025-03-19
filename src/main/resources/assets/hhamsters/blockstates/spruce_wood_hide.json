@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hhamsters:block/spruce_wood_hide",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hhamsters:block/spruce_wood_hide"
+    },
+    "facing=south": {
+      "model": "hhamsters:block/spruce_wood_hide",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hhamsters:block/spruce_wood_hide",
+      "y": 270
+    }
+  }
+}

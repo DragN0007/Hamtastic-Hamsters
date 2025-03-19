@@ -6,7 +6,7 @@ license="All Rights Reserved, DragN0007"
 modId="hhamsters"
 version="${1.0}"
 displayName="Hamtastic Hamsters!"
-logoFile="hhamsters_logo.png"
+logoFile="hamsters_logo.png"
 authors="DragN0007"
 description='''
 Adds Hamsters and decor!

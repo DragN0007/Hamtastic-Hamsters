@@ -1,0 +1,6 @@
+{
+  "parent": "hhamsters:block/parent/wood_hide",
+  "textures": {
+    "hide": "hhamsters:block/spruce_wood_hide"
+  }
+}

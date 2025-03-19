@@ -19,6 +19,45 @@ public class HHRecipeMaker extends RecipeProvider implements IConditionBuilder {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.IGLOO_HIDE.get())
+                .define('A', Blocks.WHITE_WOOL)
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("A A")
+                .unlockedBy("has_wool", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Blocks.WHITE_WOOL).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.SPRUCE_WOOD_HIDE.get())
+                .define('A', Blocks.SPRUCE_PLANKS)
+                .define('B', Items.STICK)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("BAA")
+                .unlockedBy("has_planks", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Blocks.SPRUCE_PLANKS).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.DUST_BATH.get())
+                .define('A', Items.STICK)
+                .define('B', Items.SAND)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .unlockedBy("has_sand", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Blocks.SAND).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.SEED_BOWL.get())
+                .define('A', Items.STICK)
+                .define('B', HHItems.HAMSTER_FOOD.get())
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .unlockedBy("has_planks", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Blocks.SPRUCE_PLANKS).build()))
+                .save(pFinishedRecipeConsumer);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, HHBlocks.HAMSTER_BEDDING.get(), 16)
                 .requires(Items.PAPER)
                 .requires(Items.PAPER)

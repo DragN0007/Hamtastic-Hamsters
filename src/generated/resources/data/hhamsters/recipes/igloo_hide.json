@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "AAA",
+    "A A"
+  ],
+  "result": {
+    "item": "hhamsters:igloo_hide"
+  },
+  "show_notification": true
+}

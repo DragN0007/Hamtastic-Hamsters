@@ -1,10 +1,7 @@
 package com.dragn0007.hhamsters.blocks;
 
 import com.dragn0007.hhamsters.HamtasticHamsters;
-import com.dragn0007.hhamsters.blocks.custom.HamsterBeddingLayerBlock;
-import com.dragn0007.hhamsters.blocks.custom.HamsterWheel;
-import com.dragn0007.hhamsters.blocks.custom.WirePanel;
-import com.dragn0007.hhamsters.blocks.custom.WirePanelDoor;
+import com.dragn0007.hhamsters.blocks.custom.*;
 import com.dragn0007.hhamsters.blocks.pixel_placement.util.PixelPlacer;
 import com.dragn0007.hhamsters.blocks.pixel_placement.util.PixelPlacerContainer;
 import com.dragn0007.hhamsters.blocks.pixel_placement.util.PixelPlacerEntity;
@@ -41,6 +38,10 @@ public class HHBlocks {
             () -> new HamsterBeddingLayerBlock(BlockBehaviour.Properties.of().forceSolidOff().strength(0.1F).sound(SoundType.WOOL).isViewBlocking((value, getter, pos) -> {
                 return value.getValue(HamsterBeddingLayerBlock.LAYERS) >= 8;
             }).pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<SeedBowl> SEED_BOWL = registerPixelPlacer("seed_bowl", SeedBowl::new);
+    public static final RegistryObject<DustBath> DUST_BATH = registerPixelPlacer("dust_bath", DustBath::new);
+    public static final RegistryObject<Block> SPRUCE_WOOD_HIDE = registerBlock("spruce_wood_hide", WoodHide::new);
+    public static final RegistryObject<Block> IGLOO_HIDE = registerBlock("igloo_hide", IglooHide::new);
 
     public static final RegistryObject<PixelPlacerContainer> PIXEL_PLACER_CONTAINER = BLOCKS.register("pixel_placer_container", PixelPlacerContainer::new);
     public static final RegistryObject<BlockEntityType<PixelPlacerEntity>> PIXEL_PLACER_ENTITY = BLOCK_ENTITIES.register("pixel_placer_container",

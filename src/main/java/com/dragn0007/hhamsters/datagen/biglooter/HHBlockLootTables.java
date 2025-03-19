@@ -20,6 +20,10 @@ public class HHBlockLootTables extends BlockLootSubProvider {
         dropSelf(HHBlocks.WIRE_PANEL_SINGLE_DOOR.get());
         dropSelf(HHBlocks.SPRUCE_HAMSTER_WHEEL.get());
         dropSelf(HHBlocks.HAMSTER_BEDDING.get());
+        dropSelf(HHBlocks.SEED_BOWL.get());
+        dropSelf(HHBlocks.DUST_BATH.get());
+        dropSelf(HHBlocks.SPRUCE_WOOD_HIDE.get());
+        dropSelf(HHBlocks.IGLOO_HIDE.get());
     }
 
     @Override
