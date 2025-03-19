@@ -3,6 +3,8 @@
   "item.hhamsters.hamster_spawn_egg": "Hamster Spawn Egg",
   "entity.hhamsters.hamster": "Hamster",
   "item.hhamsters.hamster_food": "Hamster Food",
+  "item.hhamsters.hamster": "Hamster",
+  "item.hhamsters.cooked_hamster": "Cooked Hamster",
 
   "block.hhamsters.wire_panel": "Wire Panel",
   "block.hhamsters.wire_panel_door": "Wire Panel Double Door",

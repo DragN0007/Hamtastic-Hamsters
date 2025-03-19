@@ -1,4 +1,7 @@
-// 1.20.1	2025-03-19T05:28:48.102537	Recipes
+// 1.20.1	2025-03-19T05:47:26.0130688	Recipes
+7a966812d22b55ec3d9850382a80af53a772c888 data/hhamsters/advancements/recipes/misc/cooked_hamster_campfire_cooking.json
+1d4c2ab316c6f6377ed5175190e54e57d4e43f17 data/hhamsters/advancements/recipes/misc/cooked_hamster_smelting.json
+18d6679d96d8d6258ec68fa968061f184e098c5d data/hhamsters/advancements/recipes/misc/cooked_hamster_smoking.json
 c9df26a09340d2a0aedd4ee6a0ff84812dbe6a70 data/hhamsters/advancements/recipes/misc/dust_bath.json
 fa2abb3580aa043e64e20657ad24e53e5d13d763 data/hhamsters/advancements/recipes/misc/hamster_bedding.json
 72ad3f11b14a6b08fd2b703c29cb02b08cb20ea2 data/hhamsters/advancements/recipes/misc/hamster_food.json
@@ -9,6 +12,9 @@ b4dbbc07dae8914cf1b8fbbe78a8ea552675bb27 data/hhamsters/advancements/recipes/mis
 20353d62a7a0d7e7b2d56168423132286311c6ba data/hhamsters/advancements/recipes/misc/wire_panel.json
 d13fe21e806a693c11ae5de8c17d4ff6d23a38da data/hhamsters/advancements/recipes/misc/wire_panel_door.json
 fbe73ea42cd97b884124f8154128fb34a4fe7461 data/hhamsters/advancements/recipes/misc/wire_panel_single_door.json
+ec94140431504c91f82e74fd53095d4015b916a2 data/hhamsters/recipes/cooked_hamster_campfire_cooking.json
+ef55260f270afa9f128c2622a8068e18b7892653 data/hhamsters/recipes/cooked_hamster_smelting.json
+c7d952af963e615e3b0dfe1c4162945635e1e7f5 data/hhamsters/recipes/cooked_hamster_smoking.json
 27de56569b1f1fc6312f072d32e3ac90485bb971 data/hhamsters/recipes/dust_bath.json
 40c2bbae3d57f3e0f51860bc6a9a22ce555e7596 data/hhamsters/recipes/hamster_bedding.json
 27b6784bcbf3ed9ce1f588bf12f6254a7232f652 data/hhamsters/recipes/hamster_food.json

@@ -1,11 +1,14 @@
 package com.dragn0007.hhamsters.datagen;
 
+import com.dragn0007.hhamsters.items.HHItems;
 import com.dragn0007.hhamsters.blocks.HHBlocks;
 import com.dragn0007.hhamsters.items.HHItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
@@ -18,6 +21,13 @@ public class HHRecipeMaker extends RecipeProvider implements IConditionBuilder {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(HHItems.HAMSTER.get()), RecipeCategory.MISC, HHItems.COOKED_HAMSTER.get(), 0.35F, 100)
+                .unlockedBy("has_hamster", has(HHItems.HAMSTER.get())).save(pFinishedRecipeConsumer, new ResourceLocation("hhamsters", "cooked_hamster_smoking"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(HHItems.HAMSTER.get()), RecipeCategory.MISC, HHItems.COOKED_HAMSTER.get(), 0.35F, 200)
+                .unlockedBy("has_hamster", has(HHItems.HAMSTER.get())).save(pFinishedRecipeConsumer, new ResourceLocation("hhamsters", "cooked_hamster_smelting"));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(HHItems.HAMSTER.get()), RecipeCategory.MISC, HHItems.COOKED_HAMSTER.get(), 0.35F, 600)
+                .unlockedBy("has_hamster", has(HHItems.HAMSTER.get())).save(pFinishedRecipeConsumer, new ResourceLocation("hhamsters", "cooked_hamster_campfire_cooking"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HHBlocks.IGLOO_HIDE.get())
                 .define('A', Blocks.WHITE_WOOL)

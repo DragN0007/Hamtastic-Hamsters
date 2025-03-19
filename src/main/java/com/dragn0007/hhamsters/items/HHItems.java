@@ -2,6 +2,7 @@ package com.dragn0007.hhamsters.items;
 
 import com.dragn0007.hhamsters.HamtasticHamsters;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +20,10 @@ public class HHItems {
 
     public static final RegistryObject<Item> HAMSTER_FOOD = ITEMS.register("hamster_food",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> HAMSTER = ITEMS.register("hamster",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).build())));
+    public static final RegistryObject<Item> COOKED_HAMSTER = ITEMS.register("cooked_hamster",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build())));
     public static final RegistryObject<Item> HAMSTERS = ITEMS.register("hamsters",
             () -> new Item(new Item.Properties()));
 

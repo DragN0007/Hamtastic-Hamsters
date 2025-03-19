@@ -21,6 +21,8 @@ public class HHItemGroup {
 
                             output.accept(HHItems.HAMSTER_SPAWN_EGG.get());
                             output.accept(HHItems.HAMSTER_FOOD.get());
+                            output.accept(HHItems.HAMSTER.get());
+                            output.accept(HHItems.COOKED_HAMSTER.get());
                             output.accept(HHBlocks.WIRE_PANEL.get());
                             output.accept(HHBlocks.WIRE_PANEL_SINGLE_DOOR.get());
                             output.accept(HHBlocks.WIRE_PANEL_DOOR.get());

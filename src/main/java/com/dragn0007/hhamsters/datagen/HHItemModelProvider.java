@@ -19,6 +19,8 @@ public class HHItemModelProvider extends ItemModelProvider {
     public void registerModels() {
         simpleItem(HHItems.HAMSTERS);
         simpleItem(HHItems.HAMSTER_FOOD);
+        simpleItem(HHItems.HAMSTER);
+        simpleItem(HHItems.COOKED_HAMSTER);
     }
 
     public ItemModelBuilder simpleItem(RegistryObject<Item> item) {
