@@ -4,7 +4,7 @@ license="All Rights Reserved, DragN0007"
 #issueTrackerURL="https://discord.gg/2WznNTtVac"
 [[mods]]
 modId="hhamsters"
-version="${1.0}"
+version="${1.1}"
 displayName="Hamtastic Hamsters!"
 logoFile="hamsters_logo.png"
 authors="DragN0007"

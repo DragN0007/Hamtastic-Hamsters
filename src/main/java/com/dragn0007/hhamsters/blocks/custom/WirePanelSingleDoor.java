@@ -111,19 +111,19 @@ public class WirePanelSingleDoor extends DecorRotatorWire implements SimpleWater
     }
 
     public static final VoxelShape NORTH = Stream.of(
-            Block.box(0, 0, 0, 16, 21, 2)
+            Block.box(0, 0, 0, 16, 24, 2)
     ).reduce((v1, v2) -> Shapes.join(v1, v2,BooleanOp.OR)).get();
 
     public static final VoxelShape EAST = Stream.of(
-            Block.box(14, 0, 0, 16, 21, 16)
+            Block.box(14, 0, 0, 16, 24, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2,BooleanOp.OR)).get();
 
     public static final VoxelShape SOUTH = Stream.of(
-            Block.box(0, 0, 14, 16, 21, 16)
+            Block.box(0, 0, 14, 16, 24, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2,BooleanOp.OR)).get();
 
     public static final VoxelShape WEST = Stream.of(
-            Block.box(0, 0, 0, 2, 21, 16)
+            Block.box(0, 0, 0, 2, 24, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2,BooleanOp.OR)).get();
 
     @Override

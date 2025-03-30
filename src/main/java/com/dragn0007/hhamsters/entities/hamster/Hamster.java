@@ -146,7 +146,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		));
 
 		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 2, true, false,
-				entity -> entity instanceof Hamster && this.isTame() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
+				entity -> entity instanceof Hamster && this.isTame() && !this.isBaby() && entity.isBaby() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
 	}
 
 	public boolean hurt(DamageSource damageSource, float amount) {
@@ -350,7 +350,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 	@Override
 	public float getStepHeight() {
-		return 1F;
+		return 1.0F;
 	}
 
 	private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
