@@ -10,6 +10,7 @@ import com.dragn0007.hhamsters.entities.ai.HamsterFollowOwnerGoal;
 import com.dragn0007.hhamsters.entities.util.EntityTypes;
 import com.dragn0007.hhamsters.gui.HamsterMenu;
 import com.dragn0007.hhamsters.util.HHTags;
+import com.dragn0007.hhamsters.util.HamtasticHamstersCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -146,7 +147,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		));
 
 		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 2, true, false,
-				entity -> entity instanceof Hamster && this.isTame() && !this.isBaby() && entity.isBaby() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
+				entity -> entity instanceof Hamster && HamtasticHamstersCommonConfig.HAMSTERS_FIGHT.get() && this.isTame() && !this.isBaby() && entity.isBaby() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
 	}
 
 	public boolean hurt(DamageSource damageSource, float amount) {
