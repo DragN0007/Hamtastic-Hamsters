@@ -11,14 +11,22 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HamsterMarkingLayer extends GeoRenderLayer<Hamster> {
     public HamsterMarkingLayer(GeoRenderer entityRendererIn) {
         super(entityRendererIn);
     }
 
+    public static final Map<String, ResourceLocation> TEXTURE_CACHE = new HashMap<>();
+    public ResourceLocation getTexture(Hamster animatable) {
+        return TEXTURE_CACHE.computeIfAbsent(animatable.getOverlayLocation(), ResourceLocation::tryParse);
+    }
+
     @Override
     public void render(PoseStack poseStack, Hamster animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        RenderType renderMarkingType = RenderType.entityCutout(((Hamster)animatable).getOverlayLocation());
+        RenderType renderMarkingType = RenderType.entityCutout(this.getTexture(animatable));
         poseStack.pushPose();
         poseStack.scale(1.0f, 1.0f, 1.0f);
         poseStack.translate(0.0d, 0.0d, 0.0d);

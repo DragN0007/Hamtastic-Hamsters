@@ -1,0 +1,10 @@
+// 1.20.1	2025-07-10T14:38:27.4792876	Loot Tables
+2bb2f4ad5c073035ac9c788df5be2e06df62af46 data/hhamsters/loot_tables/blocks/dust_bath.json
+c6d85a5b41952957c7068e58b0e09d156e7d777c data/hhamsters/loot_tables/blocks/hamster_bedding.json
+bddc4ffca9d70233ab56c2321491a77109555951 data/hhamsters/loot_tables/blocks/igloo_hide.json
+084d46a84861afd90288fd942f5a5e5118c839d3 data/hhamsters/loot_tables/blocks/seed_bowl.json
+c581eb11b1df5d45973e5a5d9b80fdc2913cddf2 data/hhamsters/loot_tables/blocks/spruce_hamster_wheel.json
+f94bcf5c4484874c9f2733de6bbc765381329f01 data/hhamsters/loot_tables/blocks/spruce_wood_hide.json
+b6b71d51b5f63090221eb01fbec796817ac97178 data/hhamsters/loot_tables/blocks/wire_panel.json
+f016b59a90df62dbc4ff131322e9217d8bd8ccc5 data/hhamsters/loot_tables/blocks/wire_panel_door.json
+ebc5e1970849e4ce5339e5cb38afe160dafca65d data/hhamsters/loot_tables/blocks/wire_panel_single_door.json

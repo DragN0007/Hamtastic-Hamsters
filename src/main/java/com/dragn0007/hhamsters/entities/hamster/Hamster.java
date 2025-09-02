@@ -147,7 +147,7 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		));
 
 		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 2, true, false,
-				entity -> entity instanceof Hamster && HamtasticHamstersCommonConfig.HAMSTERS_FIGHT.get() && this.isTame() && !this.isBaby() && entity.isBaby() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
+				entity -> entity instanceof Hamster && HamtasticHamstersCommonConfig.HAMSTERS_FIGHT.get() && this.isTame() && !this.isBaby() && !entity.isBaby() && ((Hamster) entity).isTame() && ((Hamster) entity).getGender() == this.getGender()));
 	}
 
 	public boolean hurt(DamageSource damageSource, float amount) {
@@ -504,14 +504,14 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 	}
 
 	// Generates the base texture
-	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(Hamster.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(Hamster.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<String> VARIANT_TEXTURE = SynchedEntityData.defineId(Hamster.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<String> OVERLAY_TEXTURE = SynchedEntityData.defineId(Hamster.class, EntityDataSerializers.STRING);
 
-	public ResourceLocation getTextureResource() {
+	public String getTextureResource() {
 		return this.entityData.get(VARIANT_TEXTURE);
 	}
 
-	public ResourceLocation getOverlayLocation() {
+	public String getOverlayLocation() {
 		return this.entityData.get(OVERLAY_TEXTURE);
 	}
 
@@ -531,27 +531,19 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
-		this.entityData.set(VARIANT_TEXTURE, HamsterModel.Variant.variantFromOrdinal(variant).resourceLocation);
+		this.entityData.set(VARIANT_TEXTURE, HamsterModel.Variant.variantFromOrdinal(variant).resourceLocation.toString());
 	}
 	public void setOverlayVariant(int overlayVariant) {
 		this.entityData.set(OVERLAY, overlayVariant);
-		this.entityData.set(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.patternFromOrdinal(overlayVariant).resourceLocation);
+		this.entityData.set(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.patternFromOrdinal(overlayVariant).resourceLocation.toString());
 	}
 
 	public void setVariantTexture(String variant) {
-		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
-		if (resourceLocation == null) {
-			resourceLocation = HamsterModel.Variant.BLACK.resourceLocation;
-		}
-		this.entityData.set(VARIANT_TEXTURE, resourceLocation);
+		this.entityData.set(VARIANT_TEXTURE, variant);
 	}
 
 	public void setOverlayVariantTexture(String variant) {
-		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
-		if (resourceLocation == null) {
-			resourceLocation = HamsterMarkingLayer.Overlay.NONE.resourceLocation;
-		}
-		this.entityData.set(OVERLAY_TEXTURE, resourceLocation);
+		this.entityData.set(OVERLAY_TEXTURE, variant);
 	}
 
 	public void setBreed(int breed) {
@@ -669,8 +661,8 @@ public class Hamster extends TamableAnimal implements InventoryCarrier, GeoEntit
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(GENDER, 0);
 		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT_TEXTURE, HamsterModel.Variant.BLACK.resourceLocation);
-		this.entityData.define(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.NONE.resourceLocation);
+		this.entityData.define(VARIANT_TEXTURE, HamsterModel.Variant.BLACK.resourceLocation.toString());
+		this.entityData.define(OVERLAY_TEXTURE, HamsterMarkingLayer.Overlay.NONE.resourceLocation.toString());
 	}
 
 	public enum Gender {

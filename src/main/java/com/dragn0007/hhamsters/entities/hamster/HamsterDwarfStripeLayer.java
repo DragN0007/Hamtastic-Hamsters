@@ -1,5 +1,6 @@
 package com.dragn0007.hhamsters.entities.hamster;
 
+import com.dragn0007.dragnlivestock.entities.unicorn.Unicorn;
 import com.dragn0007.hhamsters.HamtasticHamsters;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -11,9 +12,17 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HamsterDwarfStripeLayer extends GeoRenderLayer<Hamster> {
     public HamsterDwarfStripeLayer(GeoRenderer entityRendererIn) {
         super(entityRendererIn);
+    }
+
+    public static final Map<String, ResourceLocation> TEXTURE_CACHE = new HashMap<>();
+    public ResourceLocation getTexture(Hamster animatable) {
+        return TEXTURE_CACHE.computeIfAbsent(animatable.getOverlayLocation(), ResourceLocation::tryParse);
     }
 
     @Override
@@ -23,7 +32,7 @@ public class HamsterDwarfStripeLayer extends GeoRenderLayer<Hamster> {
             return;
         }
 
-        RenderType renderMarkingType = RenderType.entityCutout(((Hamster)animatable).getOverlayLocation());
+        RenderType renderMarkingType = RenderType.entityCutout(this.getTexture(animatable));
         poseStack.pushPose();
         poseStack.scale(1.0f, 1.0f, 1.0f);
         poseStack.translate(0.0d, 0.0d, 0.0d);
